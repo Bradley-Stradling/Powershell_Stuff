@@ -1,0 +1,64 @@
+# example input "hello world"
+# example output ".... . .-.. .-.. --- / .-- --- .-. .-.. -.."
+
+$IMC = @(".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--..",".----","..---","...--","....-",".....","-....","--...","---..","----.","-----")
+$Plain = @("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","1","2","3","4","5","6","7","8","9","0")
+$Output_Array = New-Object System.Collections.ArrayList
+$In_Out = Read-Host -Prompt '1 for plain to MC, or 2 for MC to plain'
+
+$User_Input =  Read-Host -Prompt 'Input string ->'
+
+$User_Input_Split = $User_Input.Split(" ")
+
+If ( $In_Out -eq "1")
+{
+$Output_Array = New-Object System.Collections.ArrayList
+$User_Input = $User_Input.replace(" ","/")
+$User_Input_Array = $User_Input.ToCharArray()
+For ( $Inputer=0; $Inputer -lt $User_Input_Array.count; $Inputer++ )
+{
+If ( $Inputer -ne "0")
+{
+$Output_Array.Add(" ") | Out-Null
+}
+If ( $User_Input_Array[$Inputer] -eq "/")
+{
+$Output_Array.Add("/") | Out-Null
+}
+Else
+{
+For ( $iterator = 0; $iterator -lt $IMC.count; $iterator++ )
+{
+If ( $Plain[$iterator] -eq $User_Input_Array[$Inputer])
+{
+$Output_Array.Add($IMC[$iterator]) | Out-Null
+}
+}
+}
+}
+}
+
+If ( $In_Out -eq "2")
+{
+For ( $Inputer=0; $Inputer -lt $User_Input_Split.count; $Inputer++ )
+{
+
+If ( $User_Input_Split[$Inputer] -eq "/")
+{
+($Output_Array.Add(" ")) | Out-Null
+}
+Else
+{
+For ( $iterator = 0; $iterator -lt $IMC.count; $iterator++ )
+{
+If ( $User_Input_Split[$Inputer] -eq $IMC[$iterator])
+{
+$Output_Array.Add($Plain[$iterator]) | Out-Null
+}
+}
+}
+}
+}
+
+$Output_String = $Output_Array -Join ""
+$Output_String
